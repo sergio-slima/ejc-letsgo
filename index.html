@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Fill Effect</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+            background-image: url('./bg.png'); /* Substitua pelo link da imagem */
+            background-size: cover; /* Faz a imagem cobrir toda a tela */
+            background-position: center; /* Centraliza a imagem */
+            background-repeat: no-repeat; /* Impede que a imagem se repita */
+        }
+        h1 {
+            font-size: 3em;
+            margin-top: 150px;
+            margin-bottom: -150px;
+            color: red;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        canvas {
+            display: block;
+            /* border: 2px solid black; */
+        }
+        .controls {
+            margin-top: -100px;
+            margin-bottom: 100px;
+        }
+        button {
+            font-size: 1.5em;
+            margin: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }        
+        @media (max-width: 768px) {
+            h1 {
+                margin-top: 70px;
+                 margin-bottom: -150px;
+                font-size: 1.5em;
+            }
+            button {
+                font-size: 2em;
+                padding: 10px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Temperatura do Amor ❤️</h1>
+
+    <canvas id="heartCanvas" width="800" height="800"></canvas>
+
+    <div class="controls">
+        <button onclick="increaseLevel()">+</button>
+        <button onclick="decreaseLevel()">-</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("heartCanvas");
+        const ctx = canvas.getContext("2d");
+        let level = 0;
+        let waveOffset = 0;
+        let waveAmplitude = 0;
+        let damping = 0.95;
+        let isFilling = false;
+
+        function drawHeart() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Desenha o contorno do coração
+            ctx.beginPath();
+            ctx.moveTo(400, 650);
+            ctx.bezierCurveTo(100, 400, 100, 100, 400, 200);
+            ctx.bezierCurveTo(700, 100, 700, 400, 400, 650);
+            ctx.closePath();
+            ctx.strokeStyle = "black";
+            ctx.lineWidth = 5;
+            ctx.stroke();
+            ctx.fillStyle = "white";
+            ctx.fill();
+            
+            // Simula o líquido enchendo com ondas
+            let liquidHeight = (level / 100) * 450;
+            ctx.save();
+            ctx.clip();
+            ctx.beginPath();
+            ctx.moveTo(100, 650 - liquidHeight);
+            for (let x = 100; x <= 700; x += 20) {
+                ctx.lineTo(x, 650 - liquidHeight + Math.sin((x + waveOffset) * 0.1) * waveAmplitude);
+            }
+            ctx.lineTo(700, 650);
+            ctx.lineTo(100, 650);
+            ctx.closePath();
+            ctx.fillStyle = "red";
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function animateWave() {
+            if (!isFilling) {
+                waveAmplitude *= damping; // Suaviza as ondas gradualmente
+                if (waveAmplitude < 0.1) waveAmplitude = 0; // Para completamente quando for imperceptível
+            }
+            waveOffset += 2;
+            drawHeart();
+            requestAnimationFrame(animateWave);
+        }
+
+        function increaseLevel() {
+            if (level < 105) {
+                level += 1;
+                waveAmplitude = 5;
+                isFilling = true;
+            }
+            drawHeart();
+            isFilling = false;
+        }
+
+        function decreaseLevel() {
+            if (level > 0) {
+                level -= 1;
+                waveAmplitude = 5;
+                isFilling = true;
+            }
+            drawHeart();
+            isFilling = false;
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === '+' && level < 105) {
+                level += 1;
+                waveAmplitude = 5; // Reinicia a amplitude ao adicionar líquido
+                isFilling = true;
+            } else if (event.key === '-' && level > 0) {
+                level -= 1;
+                waveAmplitude = 5; // Reinicia a amplitude ao remover líquido
+                isFilling = true;
+            }
+            drawHeart();
+        });
+
+        document.addEventListener('keyup', () => {
+            isFilling = false; // Para de agitar quando soltar a tecla
+        });
+
+        drawHeart();
+        animateWave();
+    </script>
+</body>
+</html>
