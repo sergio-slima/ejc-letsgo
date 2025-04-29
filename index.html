@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IV EJC de Açailândia 2025</title>
+    <title>EJC 2025</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -70,7 +70,7 @@
         <!-- Header with gradient -->
         <div class="bg-gradient-to-r from-red-500 via-blue-500 to-green-500 p-6 text-center">
             <h1 class="text-4xl md:text-5xl font-extrabold text-white">IV EJC de Açailândia 2025</h1>
-            <p class="text-white mt-2 text-lg">Jornada de Fé, Alegria e Amizade</p>
+            <!-- <p class="text-white mt-2 text-lg">Jornada de Fé, Alegria e Amizade</p> -->
         </div>
         
         <!-- Main content -->
@@ -96,7 +96,7 @@
             <div id="initialMessage" class="animate__animated animate__fadeIn">
                 <p class="text-xl font-semibold text-gray-800 mb-6">Preparado para grandes emoções?</p>
                 <button id="actionBtn" class="bg-gradient-to-r from-red-500 to-yellow-400 hover:from-red-600 hover:to-yellow-500 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg pulse transform transition duration-500 hover:scale-105">
-                    Clique Aqui!
+                    Sim? Clique Aqui!
                 </button>
             </div>
             
@@ -116,26 +116,48 @@
         
         <!-- Footer -->
         <div class="bg-gray-100 p-4 text-center text-gray-600">
-            <p>Com carinho, seu amigo do EJC ❤️</p>
+            <p>Com carinho, seu amigo Sergio 🤩</p>
         </div>
     </div>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Get name from URL path
-            const pathParts = window.location.pathname.split('/');
-            const nameFromUrl = pathParts[pathParts.length - 1];
-            
-            // Format name (replace hyphens with spaces and capitalize)
-            let formattedName = "meu amigo(a)";
-            if (nameFromUrl && nameFromUrl.trim() !== "" && nameFromUrl !== "index.html") {
-                formattedName = nameFromUrl
-                    .replace(/-/g, ' ')
-                    .replace(/\b\w/g, c => c.toUpperCase());
+            const params = new URLSearchParams(window.location.search);
+            const rawEJC = params.get('ejc');
+
+            if (rawEJC) {
+                const vogaisMap = { '4': 'a', '3': 'e', '1': 'i', '0': 'o', '8': 'u' };
+
+                // Separar por %
+                const parts = rawEJC.split('%');
+
+                const nomeReal = parts.map(part => {
+                // Inverter o nome
+                const original = part.split('').reverse().join('');
+
+                // Substituir os números de volta para vogais
+                return original.replace(/[43108]/g, char => vogaisMap[char]);
+                }).join(' ');
+
+                // document.getElementById('saudacao').textContent = `Olá, ${nomeReal}!`;
+                document.getElementById('greeting').textContent = `Olá, ${nomeReal}!`;
             }
+            //////////////////////////////////////////////////
+            // const urlParams = new URLSearchParams(window.location.search);
+            // const nameFromUrl = urlParams.get('nome');
             
-            // Update greeting
-            document.getElementById('greeting').textContent = `Olá, ${formattedName}!`;
+            // // Format name (replace hyphens with spaces and capitalize)
+            // let formattedName = "meu amigo(a)";
+            // if (nameFromUrl && nameFromUrl.trim() !== "" && nameFromUrl !== "index.html") {
+            //     formattedName = nameFromUrl
+            //         .replace(/-/g, ' ')
+            //         .replace(/\b\w/g, c => c.toUpperCase());
+            // }
+            
+            // // Update greeting
+            // document.getElementById('greeting').textContent = `Olá, ${formattedName}!`;
+            ///////////////////////////////////////////////////////
             
             const actionBtn = document.getElementById('actionBtn');
             const initialMessage = document.getElementById('initialMessage');
