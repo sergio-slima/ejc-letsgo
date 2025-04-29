@@ -1,162 +1,213 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart Fill Effect</title>
+    <title>IV EJC de Açailândia 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+        
         body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            margin: 0;
-            background-image: url('./bg.png'); /* Substitua pelo link da imagem */
-            background-size: cover; /* Faz a imagem cobrir toda a tela */
-            background-position: center; /* Centraliza a imagem */
-            background-repeat: no-repeat; /* Impede que a imagem se repita */
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        h1 {
-            font-size: 3em;
-            margin-top: 150px;
-            margin-bottom: -150px;
-            color: red;
-            animation: pulse 1.5s infinite;
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #FF5252, #2196F3, #4CAF50, #FFEB3B);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 300% 300%;
+            animation: gradient 8s ease infinite;
         }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-        canvas {
-            display: block;
-            /* border: 2px solid black; */
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            opacity: 0;
         }
-        .controls {
-            margin-top: -100px;
-            margin-bottom: 100px;
+        
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            border-radius: 50%;
+            animation: float 8s ease-in-out infinite;
+            z-index: -1;
         }
-        button {
-            font-size: 1.5em;
-            margin: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }        
-        @media (max-width: 768px) {
-            h1 {
-                margin-top: 70px;
-                 margin-bottom: -150px;
-                font-size: 1.5em;
-            }
-            button {
-                font-size: 2em;
-                padding: 10px 30px;
-            }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
     </style>
 </head>
-<body>
-    <h1>Temperatura do Amor ❤️</h1>
-
-    <canvas id="heartCanvas" width="800" height="800"></canvas>
-
-    <div class="controls">
-        <button onclick="increaseLevel()">+</button>
-        <button onclick="decreaseLevel()">-</button>
+<body class="flex flex-col items-center justify-center p-4">
+    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl overflow-hidden animate__animated animate__fadeIn">
+        <!-- Header with gradient -->
+        <div class="bg-gradient-to-r from-red-500 via-blue-500 to-green-500 p-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white">IV EJC de Açailândia 2025</h1>
+            <p class="text-white mt-2 text-lg">Jornada de Fé, Alegria e Amizade</p>
+        </div>
+        
+        <!-- Main content -->
+        <div class="p-8 text-center relative">
+            <!-- Balloons decoration -->
+            <div class="balloon bg-red-500 top-10 left-10"></div>
+            <div class="balloon bg-blue-500 top-20 right-20 animation-delay-2"></div>
+            <div class="balloon bg-yellow-400 bottom-10 left-20 animation-delay-4"></div>
+            <div class="balloon bg-green-500 bottom-20 right-10 animation-delay-6"></div>
+            
+            <h2 class="text-3xl font-bold gradient-text mb-6" id="greeting">Olá, meu amigo(a)!</h2>
+            
+            <div class="mb-8">
+                <p class="text-gray-700 text-lg mb-4">Você está prestes a embarcar em uma jornada incrível cheia de:</p>
+                <div class="flex flex-wrap justify-center gap-4 mb-6">
+                    <div class="bg-red-100 text-red-700 px-4 py-2 rounded-full font-semibold">Fé</div>
+                    <div class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-semibold">Alegria</div>
+                    <div class="bg-green-100 text-green-700 px-4 py-2 rounded-full font-semibold">Amizade</div>
+                    <div class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-full font-semibold">Emoções</div>
+                </div>
+            </div>
+            
+            <div id="initialMessage" class="animate__animated animate__fadeIn">
+                <p class="text-xl font-semibold text-gray-800 mb-6">Preparado para grandes emoções?</p>
+                <button id="actionBtn" class="bg-gradient-to-r from-red-500 to-yellow-400 hover:from-red-600 hover:to-yellow-500 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg pulse transform transition duration-500 hover:scale-105">
+                    Clique Aqui!
+                </button>
+            </div>
+            
+            <div id="congratsMessage" class="hidden animate__animated animate__zoomIn">
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded">
+                    <h3 class="text-2xl font-bold text-green-700">Parabéns!</h3>
+                    <p class="text-gray-800 mt-2" id="countdownText">Restam X Dias para vivenciar fortes emoções</p>
+                </div>
+                <div class="flex justify-center">
+                    <div class="w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
+                        <span class="text-3xl font-bold text-white" id="daysLeft">X</span>
+                    </div>
+                </div>
+                <p class="text-gray-600 mt-6">Prepare seu coração para essa experiência transformadora!</p>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="bg-gray-100 p-4 text-center text-gray-600">
+            <p>Com carinho, seu amigo do EJC ❤️</p>
+        </div>
     </div>
-
+    
     <script>
-        const canvas = document.getElementById("heartCanvas");
-        const ctx = canvas.getContext("2d");
-        let level = 0;
-        let waveOffset = 0;
-        let waveAmplitude = 0;
-        let damping = 0.95;
-        let isFilling = false;
-
-        function drawHeart() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get name from URL path
+            const pathParts = window.location.pathname.split('/');
+            const nameFromUrl = pathParts[pathParts.length - 1];
             
-            // Desenha o contorno do coração
-            ctx.beginPath();
-            ctx.moveTo(400, 650);
-            ctx.bezierCurveTo(100, 400, 100, 100, 400, 200);
-            ctx.bezierCurveTo(700, 100, 700, 400, 400, 650);
-            ctx.closePath();
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 5;
-            ctx.stroke();
-            ctx.fillStyle = "white";
-            ctx.fill();
+            // Format name (replace hyphens with spaces and capitalize)
+            let formattedName = "meu amigo(a)";
+            if (nameFromUrl && nameFromUrl.trim() !== "" && nameFromUrl !== "index.html") {
+                formattedName = nameFromUrl
+                    .replace(/-/g, ' ')
+                    .replace(/\b\w/g, c => c.toUpperCase());
+            }
             
-            // Simula o líquido enchendo com ondas
-            let liquidHeight = (level / 100) * 450;
-            ctx.save();
-            ctx.clip();
-            ctx.beginPath();
-            ctx.moveTo(100, 650 - liquidHeight);
-            for (let x = 100; x <= 700; x += 20) {
-                ctx.lineTo(x, 650 - liquidHeight + Math.sin((x + waveOffset) * 0.1) * waveAmplitude);
+            // Update greeting
+            document.getElementById('greeting').textContent = `Olá, ${formattedName}!`;
+            
+            const actionBtn = document.getElementById('actionBtn');
+            const initialMessage = document.getElementById('initialMessage');
+            const congratsMessage = document.getElementById('congratsMessage');
+            const daysLeftElement = document.getElementById('daysLeft');
+            const countdownText = document.getElementById('countdownText');
+            
+            // Set the event date to May 23, 2025
+            const eventDate = new Date('2025-05-23');
+            const today = new Date();
+            const timeDiff = eventDate - today;
+            const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            
+            // Update countdown
+            daysLeftElement.textContent = daysLeft;
+            countdownText.textContent = `Restam ${daysLeft} Dias para vivenciar fortes emoções`;
+            
+            actionBtn.addEventListener('click', function() {
+                // Hide initial message
+                initialMessage.classList.add('animate__fadeOut');
+                
+                setTimeout(() => {
+                    initialMessage.classList.add('hidden');
+                    
+                    // Show congrats message
+                    congratsMessage.classList.remove('hidden');
+                    congratsMessage.classList.add('animate__zoomIn');
+                    
+                    // Launch confetti
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#FF5252', '#2196F3', '#4CAF50', '#FFEB3B']
+                    });
+                    
+                    // Add floating balloons effect
+                    for (let i = 0; i < 30; i++) {
+                        setTimeout(() => {
+                            createConfetti();
+                        }, i * 100);
+                    }
+                }, 500);
+            });
+            
+            function createConfetti() {
+                const colors = ['#FF5252', '#2196F3', '#4CAF50', '#FFEB3B'];
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = window.innerHeight + 'px';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.opacity = '1';
+                document.body.appendChild(confetti);
+                
+                const animationDuration = Math.random() * 3 + 2;
+                
+                confetti.animate([
+                    { transform: `translate(0, 0) rotate(0deg)`, opacity: 1 },
+                    { transform: `translate(${Math.random() * 200 - 100}px, -${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                ], {
+                    duration: animationDuration * 1000,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.9, 1)'
+                });
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, animationDuration * 1000);
             }
-            ctx.lineTo(700, 650);
-            ctx.lineTo(100, 650);
-            ctx.closePath();
-            ctx.fillStyle = "red";
-            ctx.fill();
-            ctx.restore();
-        }
-
-        function animateWave() {
-            if (!isFilling) {
-                waveAmplitude *= damping; // Suaviza as ondas gradualmente
-                if (waveAmplitude < 0.1) waveAmplitude = 0; // Para completamente quando for imperceptível
-            }
-            waveOffset += 2;
-            drawHeart();
-            requestAnimationFrame(animateWave);
-        }
-
-        function increaseLevel() {
-            if (level < 105) {
-                level += 1;
-                waveAmplitude = 5;
-                isFilling = true;
-            }
-            drawHeart();
-            isFilling = false;
-        }
-
-        function decreaseLevel() {
-            if (level > 0) {
-                level -= 1;
-                waveAmplitude = 5;
-                isFilling = true;
-            }
-            drawHeart();
-            isFilling = false;
-        }
-
-        document.addEventListener('keydown', (event) => {
-            if (event.key === '+' && level < 105) {
-                level += 1;
-                waveAmplitude = 5; // Reinicia a amplitude ao adicionar líquido
-                isFilling = true;
-            } else if (event.key === '-' && level > 0) {
-                level -= 1;
-                waveAmplitude = 5; // Reinicia a amplitude ao remover líquido
-                isFilling = true;
-            }
-            drawHeart();
         });
-
-        document.addEventListener('keyup', () => {
-            isFilling = false; // Para de agitar quando soltar a tecla
-        });
-
-        drawHeart();
-        animateWave();
     </script>
 </body>
 </html>
